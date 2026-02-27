@@ -1,0 +1,151 @@
+<html>
+    <head>
+        <title>MathJax</title>
+        <link rel="icon" href="" type="svg">
+        <script>
+            MathJax = {
+                tex: {
+                    inlineMath: [['$', '$'], ['\\(','\\)']]
+                },
+                svg: {
+                    fontCache: 'global'
+                }
+            };
+        </script>
+
+        <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    </head>
+    <body>
+        Below is the quadratic formula:
+        \[a^2 + b^2 = c^2\]
+
+        But inline LaTeX fails without additional JavaScript code, which has been added: $x=0$. Use double dollar signs for block equations:
+        $$
+        \begin{align}
+        \text{KE}_1 & = \tfrac{1}{2}m\|\textbf{v}_1\|^2_2 \\
+        & = \tfrac{1}{2}m(\dot{x}_1^2 + \dot{y}_1^2) \\
+        & = \tfrac{1}{2}ml^2(\dot{\theta}^2\text{ cos}^2(\theta) + \dot{\theta}^2\text{ sin}^2(\theta)) \\
+        & = \tfrac{1}{2}ml^2\dot{\theta}^2 \\ \\
+        \text{KE}_2 & = \tfrac{1}{2}m\|\textbf{v}_2\|^2_2 \\
+        & = \tfrac{1}{2}m(\dot{x}_2^2 + \dot{y}_2^2) \\
+        & = \tfrac{1}{2}ml^2\dot{\theta}^2 + \tfrac{1}{2}ml^2\dot{\phi}^2 + ml^2\dot{\theta}\dot{\phi}\text{ cos}(\theta - \phi)
+        \end{align}
+        $$
+
+        <header>
+            <h1><b>Network Dynamics</b></h1>
+            <p>A computational exploration of network dynamics using oscillating nodes capable of chaotic behavior.
+
+        Steven Strogatz offers this working definition of chaos in his classic text <i>>Nonlinear Dynamics and Chaos</i>: 
+
+        "No definition of the term <i>chaos</i> is universally accepted yet, but almost everyone would agree on the three ingredients used in the following working definition: <b>Chaos</b> is aperiodic long-term behavior in a deterministic system that exhibits <i>sensitivie dependence on initial conditions.</i>"
+
+        The following parts will introduce experiments that were run on networks of coupled double pendulums using a custom RK4 algorithm.</p>
+            </p>
+        
+        
+        </header>
+        <header>
+            <h2><b>I. Introduction</b></h2>
+            <p>The double pendulum is a widely studied physical system that can exhibit chaotic behavior.
+        
+        </header>
+
+        
+
+        <center><img src=".\img\dp.png" width=250 height=250 /></center>
+        <center><i><b>Figure 1:</b> Experimental setup. All motion is in the plane.</i></center>
+        <br>
+
+        Many visualizations of the double pendulum available on the Internet have been based on two key starting assumptions: (1) equal arm lengths and masses and (2) zero initial angular velocities for both angles. For each of the experiments that follow, the second assumption was relaxed. 
+
+        Derivations of all equations used for the simulations are given in the next part, including the equations of motion, total energy, the equivalent 4-dimensional system of equations, and the coupling model.</p>
+
+        <header><h2><b>II. Derivations</b></h2></header> 
+        <header><h3><b>A. Equations of Motion</b></h3></header>
+        The top point of connection of the first arm is the origin $(0,0)$. An angle equal to 0 corresponds to a mass hanging straight down its corresponding vertical. With this geometry in mind, the position of the first mass is $(l\text{ sin}(\theta), -l\text{ cos}(\theta))$ and the position of the second mass is $(l\text{ sin}(\theta) + l\text{ sin}(\phi), -l\text{ cos}(\theta) - l\text{ cos}(\phi))$.
+
+        The kinetic energy of the masses are given by the following: 
+
+        $$
+        \begin{align}
+        \text{KE}_1 & = \tfrac{1}{2}m\|\textbf{v}_1\|^2_2 \\
+        & = \tfrac{1}{2}m(\dot{x}_1^2 + \dot{y}_1^2) \\
+        & = \tfrac{1}{2}ml^2(\dot{\theta}^2\text{ cos}^2(\theta) + \dot{\theta}^2\text{ sin}^2(\theta)) \\
+        & = \tfrac{1}{2}ml^2\dot{\theta}^2 \\ \\
+        
+        \text{KE}_2 & = \tfrac{1}{2}m\|\textbf{v}_2\|^2_2 \\
+        & = \tfrac{1}{2}m(\dot{x}_2^2 + \dot{y}_2^2) \\
+        & = \tfrac{1}{2}ml^2\dot{\theta}^2 + \tfrac{1}{2}ml^2\dot{\phi}^2 + ml^2\dot{\theta}\dot{\phi}\text{ cos}(\theta - \phi)
+        \end{align}
+        $$
+
+        And the potential energy of the two masses are given by the following:
+
+        $$
+        \begin{align}
+        \text{PE}_1 & = -mgl\text{ cos}(\theta) \\
+        \text{PE}_2 & = -mgl\text{ cos}(\theta) - mgl\text{ cos}(\phi)
+        \end{align}
+        $$
+
+        Now let $T = \text{KE}_1 + \text{KE}_2$ and $V = \text{PE}_1 + \text{PE}_2$. Therefore $T$ and $V$ represents the total kinetic and potential energy of the system, respectively, as it evolves over time. We do not include any friction in the model. Lagrange's equation can be used to determine the equations of motion. Let $\mathcal{L} = T - V$. 
+
+        $$
+        \begin{align}
+        \frac{d}{dt}\frac{\partial\mathcal{L}}{\partial\dot{\theta}} - \frac{\partial\mathcal{L}}{\partial\theta} = 0 \\
+        \frac{d}{dt}\frac{\partial\mathcal{L}}{\partial\dot{\phi}} - \frac{\partial\mathcal{L}}{\partial\phi} = 0
+        \end{align}
+        $$
+
+        Carrying out the necessary derivates yields the equationsn of motion.
+        $$
+        \begin{align}
+        2\ddot{\theta} + \ddot{\phi}\text{ cos}(\theta-\phi) + \dot{\phi}^2\text{ sin}(\theta-\phi) + \tfrac{2g}{L}\text{ sin}(\theta) = 0 \\
+        
+        \ddot{\phi} + \ddot{\theta}\text{ cos}(\theta-\phi) - \dot{\theta}^2\text{ sin}(\theta-\phi) + \tfrac{g}{L}\text{ sin}(\phi) = 0
+        \end{align}
+        $$
+
+        This is a system of second order homogeneous nonlinear differential equations. Both equations are needed to describe the double pendulum. The fractional coefficient $\tfrac{g}{L}$ in front of the final sine terms has units of $\tfrac{m^2}{s^2}$. Define $\omega \equiv \sqrt{\tfrac{g}{L}}$. It is useful to nondimensionalize the EOM above using the substitution $\tau = \omega t$. Performing this substitution and taking derivatives with respect to $\tau$ (indicated by primes) gives the following nondimensionalized equations.
+        
+        $$
+        \begin{align}
+        2\theta^{\prime\prime} + \phi^{\prime\prime}\text{ cos}(\theta-\phi) + (\phi^\prime)^2\text{ sin}(\theta-\phi) + 2\text{ sin}(\theta) = 0 \\
+        
+        \phi^{\prime\prime} + \theta^{\prime\prime}\text{ cos}(\theta-\phi) - (\theta^\prime)^2\text{ sin}(\theta-\phi) + \text{sin}(\phi) = 0
+        \end{align}
+        $$
+
+        The EOM above were written with the prime symbol ($\prime$) to make explicit these derivates are carried out with respect to $\tau$. However, going forward, the notebook will use the dot notation in the nondimensionalized EOM. They are going to have the same dynamics as the original EOM. Just be aware the derivatives are with respect to $\tau$. If you change the model such that the arms are different lengths or the masses are different, then the above derivation will have to be redone. 
+
+        <header><h3><b>B. Total Energy (E)</b></h3></header>
+        The total energy, $E$, of the system is the sum of its kinetic and potential energies, or $E = T + V$. 
+
+        $$
+        \begin{align}
+        E & = ml^2\dot{\theta}^2 + \tfrac{1}{2}ml^2\dot{\phi}^2 + ml^2\dot{\theta}\dot{\phi}\text{ cos}(\theta - \phi) - 2mgl\text{ cos}(\theta) - mgl\text{ cos}(\phi) \\
+        & = ml^2\omega^2\dot{\theta}^2 + \tfrac{1}{2}ml^2\omega^2\dot{\phi}^2 + ml^2\omega^2\dot{\theta}\dot{\phi}\text{ cos}(\theta - \phi) - 2mgl\text{ cos}(\theta) - mgl\text{ cos}(\phi) \\
+        & = mgl\dot{\theta}^2 + \tfrac{1}{2}mgl\dot{\phi}^2 + mgl\dot{\theta}\dot{\phi}\text{ cos}(\theta - \phi) - 2mgl\text{ cos}(\theta) - mgl\text{ cos}(\phi)
+        \end{align}
+        $$
+
+        The same nondimensionalizing procedure can be performed on this expression for $E$ to give a dimensionless energy in units of $mgl$:
+        $$
+        \begin{align}
+        \tfrac{E}{mgl} & = \dot{\theta}^2 + \tfrac{1}{2}\dot{\phi}^2 + \dot{\theta}\dot{\phi}\text{ cos}(\theta - \phi) - 2\text{ cos}(\theta) - \text{ cos}(\phi) \\
+        & = E(\theta,\phi,\dot{\theta},\dot{\phi}) \\
+        \end{align}
+        $$
+        Going forward, the notebook will use $E$ to refer to the expression on the right-hand side. It can be shown that $\dot{E} = 0$. In other words, the energy the system possesses will never change. Therefore $E$ is a value that can be calculated along any trajectory, and it should not change from its initial value.
+ 
+    </body>
+
+
+
+<center><img src="Networks\svgs\0fe1677705e987cac4f589ed600aa6b3.svg" width=100 height=100 /></center>
+<center><img src="https://paulotero.github.io/Networks/svgs/0fe1677705e987cac4f589ed600aa6b3.svg" width=100 height=100 /></center>
+<center><img src="https://paulotero.github.io/Networks/svgs/e660f3b58b414524ec6f827411021073.svg" align=middle width=36.52973609999999pt height=24.65753399999998pt /></center>
+
+
+</html>
