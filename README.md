@@ -1,4 +1,6 @@
-## Hi there 👋
+## Network Experiments
+
+A public repo created to display visualizations of computer experiments.
 
 <!--
 **paulotero/paulotero** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
