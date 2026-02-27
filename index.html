@@ -20,11 +20,12 @@
             <h1><b>Network Dynamics</b></h1>
             <p>A computational exploration of network dynamics using oscillating nodes capable of chaotic behavior.
 
-        Steven Strogatz offers this working definition of chaos in his classic text <i>>Nonlinear Dynamics and Chaos</i>: 
+                Steven Strogatz offers this working definition of chaos in his classic text <i>>Nonlinear Dynamics and Chaos</i>: 
+                "No definition of the term <i>chaos</i> is universally accepted yet, but almost everyone would agree on the three 
+                ingredients used in the following working definition: <b>Chaos</b> is aperiodic long-term behavior in a deterministic system 
+                that exhibits <i>sensitivie dependence on initial conditions.</i>"
 
-        "No definition of the term <i>chaos</i> is universally accepted yet, but almost everyone would agree on the three ingredients used in the following working definition: <b>Chaos</b> is aperiodic long-term behavior in a deterministic system that exhibits <i>sensitivie dependence on initial conditions.</i>"
-
-        The following parts will introduce experiments that were run on networks of coupled double pendulums using a custom RK4 algorithm.</p>
+                The following parts will introduce experiments that were run on networks of coupled double pendulums using a custom RK4 algorithm.
             </p>
         
         
@@ -129,7 +130,35 @@
         Going forward, the $E$ will refer to the expression on the right-hand side. It can be shown that $\dot{E} = 0$. 
         In other words, the energy that the system possesses will never change. Therefore $E$ is a value that can be calculated at any point along any trajectory, 
         and it should not change from its initial value. This fact of conservation allowed for ways to compare the accuracy of various numerical integrators. 
- 
+
+        <header><h3><b>C. Equivalent 4D System of Equations</b></h3></header>
+
+        The system of 2 second-order differential equations can be transformed into a system of 4 first-order differential equations using the substitutions below.
+
+        $
+        \begin{align}
+        \dot{\theta} & = \alpha \\
+        \dot{\phi} & = \beta \\
+        \dot{\alpha} & = -\tfrac{1}{2}(\dot{\beta}\text{ cos}(\theta-\phi) + \beta^2\text{ sin}(\theta-\phi) + 2\text{ sin}(\theta)) \\
+        \dot{\beta} & = -(\dot{\alpha}\text{ cos}(\theta-\phi) - \alpha^2\text{ sin}(\theta-\phi) + \text{sin}(\phi))
+        \end{align}
+        $
+
+        A difficulty in the system above is the <i>interdependence</i> of the last two first order derivatives on each other. 
+        To remove this dependence, the second-order derivative in one equation can be solved for in the EOM then substituted into the other equation. 
+        The result is the equivalent system below.
+        
+        $
+        \begin{align}
+        \dot{\theta} & = \alpha \\
+        \dot{\phi} & = \beta \\
+        \dot{\alpha} & = (-\alpha^2\text{ sin}(\theta-\phi)\text{ cos}(\theta-\phi) - \beta^2\text{ sin}(\theta-\phi) + \text{ sin}(\phi)\text{ cos}(\theta-\phi) - 2\text{ sin}(\theta)) ~/~ (2-\text{ cos}^2(\theta-\phi)) \\
+        \dot{\beta} & = (\tfrac{1}{2}\beta^2\text{ sin}(\theta-\phi)\text{ cos}(\theta-\phi) + \alpha^2\text{ sin}(\theta-\phi) + \text{ sin}(\theta)\text{ cos}(\theta-\phi) - \text{ sin}(\phi)) ~/~ (1 - \tfrac{1}{2}\text{ cos}^2(\theta-\phi))
+        \end{align}
+        $
+        
+        A solution to this system of differential equations is a 4-vector $(\theta(t), \phi(t), \alpha(t), \beta(t))$ having initial condition (ic) $(\theta_0, \phi_0, \alpha_0, \phi_0)$ at time $t=t_0$. 
+        Phase plane analysis can be performed on 2-dimensional projections of this system.
     </body>
 
 
@@ -140,5 +169,6 @@
 
 
 </html>
+
 
 
