@@ -135,40 +135,34 @@
 
         The system of 2 second-order differential equations can be transformed into a system of 4 first-order differential equations using the substitutions below.
 
-        $
+        $$
         \begin{align}
         \dot{\theta} & = \alpha \\
         \dot{\phi} & = \beta \\
         \dot{\alpha} & = -\tfrac{1}{2}(\dot{\beta}\text{ cos}(\theta-\phi) + \beta^2\text{ sin}(\theta-\phi) + 2\text{ sin}(\theta)) \\
         \dot{\beta} & = -(\dot{\alpha}\text{ cos}(\theta-\phi) - \alpha^2\text{ sin}(\theta-\phi) + \text{sin}(\phi))
         \end{align}
-        $
+        $$
 
         A difficulty in the system above is the <i>interdependence</i> of the last two first order derivatives on each other. 
         To remove this dependence, the second-order derivative in one equation can be solved for in the EOM then substituted into the other equation. 
         The result is the equivalent system below.
         
-        $
+        $$
         \begin{align}
         \dot{\theta} & = \alpha \\
         \dot{\phi} & = \beta \\
         \dot{\alpha} & = (-\alpha^2\text{ sin}(\theta-\phi)\text{ cos}(\theta-\phi) - \beta^2\text{ sin}(\theta-\phi) + \text{ sin}(\phi)\text{ cos}(\theta-\phi) - 2\text{ sin}(\theta)) ~/~ (2-\text{ cos}^2(\theta-\phi)) \\
         \dot{\beta} & = (\tfrac{1}{2}\beta^2\text{ sin}(\theta-\phi)\text{ cos}(\theta-\phi) + \alpha^2\text{ sin}(\theta-\phi) + \text{ sin}(\theta)\text{ cos}(\theta-\phi) - \text{ sin}(\phi)) ~/~ (1 - \tfrac{1}{2}\text{ cos}^2(\theta-\phi))
         \end{align}
-        $
+        $$
         
         A solution to this system of differential equations is a 4-vector $(\theta(t), \phi(t), \alpha(t), \beta(t))$ having initial condition (ic) $(\theta_0, \phi_0, \alpha_0, \phi_0)$ at time $t=t_0$. 
         Phase plane analysis can be performed on 2-dimensional projections of this system.
     </body>
 
-
-
-<center><img src="Networks\svgs\0fe1677705e987cac4f589ed600aa6b3.svg" width=100 height=100 /></center>
-<center><img src="https://paulotero.github.io/Networks/svgs/0fe1677705e987cac4f589ed600aa6b3.svg" width=100 height=100 /></center>
-<center><img src="https://paulotero.github.io/Networks/svgs/e660f3b58b414524ec6f827411021073.svg" align=middle width=36.52973609999999pt height=24.65753399999998pt /></center>
-
-
 </html>
+
 
 
 
