@@ -16,22 +16,6 @@
         <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
     </head>
     <body>
-        Below is the quadratic formula:
-        \[a^2 + b^2 = c^2\]
-
-        But inline LaTeX fails without additional JavaScript code, which has been added: $x=0$. Use double dollar signs for block equations:
-        $$
-        \begin{align}
-        \text{KE}_1 & = \tfrac{1}{2}m\|\textbf{v}_1\|^2_2 \\
-        & = \tfrac{1}{2}m(\dot{x}_1^2 + \dot{y}_1^2) \\
-        & = \tfrac{1}{2}ml^2(\dot{\theta}^2\text{ cos}^2(\theta) + \dot{\theta}^2\text{ sin}^2(\theta)) \\
-        & = \tfrac{1}{2}ml^2\dot{\theta}^2 \\ \\
-        \text{KE}_2 & = \tfrac{1}{2}m\|\textbf{v}_2\|^2_2 \\
-        & = \tfrac{1}{2}m(\dot{x}_2^2 + \dot{y}_2^2) \\
-        & = \tfrac{1}{2}ml^2\dot{\theta}^2 + \tfrac{1}{2}ml^2\dot{\phi}^2 + ml^2\dot{\theta}\dot{\phi}\text{ cos}(\theta - \phi)
-        \end{align}
-        $$
-
         <header>
             <h1><b>Network Dynamics</b></h1>
             <p>A computational exploration of network dynamics using oscillating nodes capable of chaotic behavior.
@@ -47,12 +31,9 @@
         </header>
         <header>
             <h2><b>I. Introduction</b></h2>
-            <p>The double pendulum is a widely studied physical system that can exhibit chaotic behavior.
+            <p>The double pendulum is a widely studied physical system that can exhibit chaotic behavior.</p>
         
-        </header>
-
-        
-
+        </header>  
         <center><img src=".\img\dp.png" width=250 height=250 /></center>
         <center><i><b>Figure 1:</b> Experimental setup. All motion is in the plane.</i></center>
         <br>
@@ -62,10 +43,12 @@
         Derivations of all equations used for the simulations are given in the next part, including the equations of motion, total energy, the equivalent 4-dimensional system of equations, and the coupling model.</p>
 
         <header><h2><b>II. Derivations</b></h2></header> 
-        <header><h3><b>A. Equations of Motion</b></h3></header>
-        The top point of connection of the first arm is the origin $(0,0)$. An angle equal to 0 corresponds to a mass hanging straight down its corresponding vertical. With this geometry in mind, the position of the first mass is $(l\text{ sin}(\theta), -l\text{ cos}(\theta))$ and the position of the second mass is $(l\text{ sin}(\theta) + l\text{ sin}(\phi), -l\text{ cos}(\theta) - l\text{ cos}(\phi))$.
+        <header><h3><b>A. Equations of Motion (EOM)</b></h3></header>
+        The top point of connection of the first arm is the origin $(0,0)$. An angle equal to 0 corresponds to a mass hanging straight down its corresponding vertical. 
+        With this geometry in mind, the position of the first mass is $(l\text{ sin}(\theta), -l\text{ cos}(\theta))$ and the position of the second mass is 
+        $(l\text{ sin}(\theta) + l\text{ sin}(\phi), -l\text{ cos}(\theta) - l\text{ cos}(\phi))$.
 
-        The kinetic energy of the masses are given by the following: 
+        The kinetic energy of the masses is given by the following: 
 
         $$
         \begin{align}
@@ -80,7 +63,7 @@
         \end{align}
         $$
 
-        And the potential energy of the two masses are given by the following:
+        And the potential energy of the two masses is given by the following:
 
         $$
         \begin{align}
@@ -89,7 +72,8 @@
         \end{align}
         $$
 
-        Now let $T = \text{KE}_1 + \text{KE}_2$ and $V = \text{PE}_1 + \text{PE}_2$. Therefore $T$ and $V$ represents the total kinetic and potential energy of the system, respectively, as it evolves over time. We do not include any friction in the model. Lagrange's equation can be used to determine the equations of motion. Let $\mathcal{L} = T - V$. 
+        Now let $T = \text{KE}_1 + \text{KE}_2$ and $V = \text{PE}_1 + \text{PE}_2$. Therefore $T$ and $V$ represents the total kinetic and potential energy of the system, respectively, as it evolves over time. 
+        Friction or damping is not included in the model. Lagrange's equation can be used to determine the equations of motion. Let $\mathcal{L} = T - V$. 
 
         $$
         \begin{align}
@@ -98,7 +82,7 @@
         \end{align}
         $$
 
-        Carrying out the necessary derivates yields the equationsn of motion.
+        Carrying out the necessary derivates yields the equations of motion.
         $$
         \begin{align}
         2\ddot{\theta} + \ddot{\phi}\text{ cos}(\theta-\phi) + \dot{\phi}^2\text{ sin}(\theta-\phi) + \tfrac{2g}{L}\text{ sin}(\theta) = 0 \\
@@ -107,7 +91,10 @@
         \end{align}
         $$
 
-        This is a system of second order homogeneous nonlinear differential equations. Both equations are needed to describe the double pendulum. The fractional coefficient $\tfrac{g}{L}$ in front of the final sine terms has units of $\tfrac{m^2}{s^2}$. Define $\omega \equiv \sqrt{\tfrac{g}{L}}$. It is useful to nondimensionalize the EOM above using the substitution $\tau = \omega t$. Performing this substitution and taking derivatives with respect to $\tau$ (indicated by primes) gives the following nondimensionalized equations.
+        This is a system of second order homogeneous nonlinear differential equations. Both equations are needed to describe the double pendulum. 
+        The fractional coefficient $\tfrac{g}{L}$ in front of the final sine terms has units of $\tfrac{m^2}{s^2}$. 
+        Define $\omega \equiv \sqrt{\tfrac{g}{L}}$. It is useful to nondimensionalize the EOM above using the substitution $\tau = \omega t$. 
+        Performing this substitution and taking derivatives with respect to $\tau$ (indicated by primes) gives the following nondimensionalized equations.
         
         $$
         \begin{align}
@@ -117,7 +104,9 @@
         \end{align}
         $$
 
-        The EOM above were written with the prime symbol ($\prime$) to make explicit these derivates are carried out with respect to $\tau$. However, going forward, the notebook will use the dot notation in the nondimensionalized EOM. They are going to have the same dynamics as the original EOM. Just be aware the derivatives are with respect to $\tau$. If you change the model such that the arms are different lengths or the masses are different, then the above derivation will have to be redone. 
+        The EOM above are written with the prime symbol ($\prime$) to make explicit these derivates are carried out with respect to $\tau$. 
+        However, going forward, the dot notation will be utilized in the nondimensionalized EOM. 
+        The derivation above critically depends on the bobs having equal masses and the arm lengths being equal, although a more general derivation is also possible. 
 
         <header><h3><b>B. Total Energy (E)</b></h3></header>
         The total energy, $E$, of the system is the sum of its kinetic and potential energies, or $E = T + V$. 
@@ -137,7 +126,9 @@
         & = E(\theta,\phi,\dot{\theta},\dot{\phi}) \\
         \end{align}
         $$
-        Going forward, the notebook will use $E$ to refer to the expression on the right-hand side. It can be shown that $\dot{E} = 0$. In other words, the energy the system possesses will never change. Therefore $E$ is a value that can be calculated along any trajectory, and it should not change from its initial value.
+        Going forward, the $E$ will refer to the expression on the right-hand side. It can be shown that $\dot{E} = 0$. 
+        In other words, the energy that the system possesses will never change. Therefore $E$ is a value that can be calculated at any point along any trajectory, 
+        and it should not change from its initial value. This fact of conservation allowed for ways to compare the accuracy of various numerical integrators. 
  
     </body>
 
@@ -149,4 +140,5 @@
 
 
 </html>
+
 
